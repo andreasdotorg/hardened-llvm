@@ -12,7 +12,7 @@ include $(LEVEL)/Makefile.config
 
 ifndef NO_RUNTIME_LIBS
 
-PARALLEL_DIRS  := libprofile
+PARALLEL_DIRS  := libprofile SoftBoundRuntime
 
 ifeq ($(TARGET_OS), $(filter $(TARGET_OS), Cygwin MingW Minix))
 PARALLEL_DIRS := $(filter-out libprofile, $(PARALLEL_DIRS))
