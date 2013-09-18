@@ -170,11 +170,10 @@ bool FixByValAttributesPass:: transformFunction(Function* func){
   const FunctionType* fty = func->getFunctionType();
   std::vector<Type*> params;
   
-  SmallVector<AttributeWithIndex, 8> param_attrs_vec;
+  SmallVector<AttributeSet, 8> param_attrs_vec;
 
-  const AttrListPtr& pal = func->getAttributes();
-  if(Attributes attrs = pal.getRetAttributes())
-    param_attrs_vec.push_back(AttributeWithIndex::get(0, attrs));
+  const AttributeSet& pal = func->getAttributes();
+  param_attrs_vec.push_back(AttributeSet::get(func->getContext(), pal.getRetAttributes()));
 
   int arg_index = 1;
   for(Function::arg_iterator i = func->arg_begin(), e = func->arg_end();
@@ -182,16 +181,13 @@ bool FixByValAttributesPass:: transformFunction(Function* func){
     Argument* arg = dyn_cast<Argument>(i);
  
     params.push_back(i->getType());
-    if(Attributes attrs = pal.getParamAttributes(arg_index)){
-      if(arg->hasByValAttr()){
+    if(arg->hasByValAttr()){
 
-      }
-      else{
-	param_attrs_vec.push_back(AttributeWithIndex::get(params.size(), attrs));
-      }
-      
     }
-
+    else{
+      param_attrs_vec.push_back(AttributeSet::get(func->getContext(), pal.getParamAttributes(arg_index)));
+    }
+      
 #if 0
     if((Attributes attrs = pal.getParamAttributes(arg_index)) && !(arg->hasByValAttr())){
       param_attrs_vec.push_back(AttributeWithIndex::get(params.size(), attrs));
@@ -203,7 +199,7 @@ bool FixByValAttributesPass:: transformFunction(Function* func){
   FunctionType* nfty = FunctionType::get(ret_type, params, fty->isVarArg());
   Function* new_func = Function::Create(nfty, func->getLinkage(), func->getName()+ ".sb");
   //  new_func->copyAttributesFrom(func);
-  new_func->setAttributes(AttrListPtr::get(param_attrs_vec.begin(), param_attrs_vec.end()));
+  new_func->setAttributes(AttributeSet::get(func->getContext(), ArrayRef<AttributeSet>(param_attrs_vec)));
                           
   SmallVector<Value*, 16> call_args;      
   new_func->getBasicBlockList().splice(new_func->begin(), func->getBasicBlockList());  

@@ -40,12 +40,12 @@
 #ifndef INSTCOUNTPASS_H
 #define INSTCOUNTPASS_H
 
-#include "llvm/Constants.h"
-#include "llvm/DerivedTypes.h"
-#include "llvm/GlobalValue.h"
-#include "llvm/Instructions.h"
-#include "llvm/Module.h"
-#include "llvm/Operator.h"
+#include "llvm/IR/Constants.h"
+#include "llvm/IR/DerivedTypes.h"
+#include "llvm/IR/GlobalValue.h"
+#include "llvm/IR/Instructions.h"
+#include "llvm/IR/Module.h"
+#include "llvm/IR/Operator.h"
 #include "llvm/ADT/FoldingSet.h"
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/ADT/StringMap.h"
@@ -62,23 +62,17 @@
 #include <algorithm>
 #include <cstdarg>
 
-
 #include "llvm/Pass.h"
-#include "llvm/Module.h"
-#include "llvm/Function.h"
-#include "llvm/CallingConv.h"
-#include "llvm/LLVMContext.h"
+#include "llvm/IR/Module.h"
+#include "llvm/IR/Function.h"
+#include "llvm/IR/CallingConv.h"
+#include "llvm/IR/LLVMContext.h"
 
-#include "llvm/Instructions.h"
-#include "llvm/Instruction.h"
 #include "llvm/Support/InstIterator.h"
-#include "llvm/Target/TargetData.h"
-#include "llvm/Constants.h"
 #include "llvm/Analysis/Dominators.h"
 #include "llvm/ADT/DepthFirstIterator.h"
 #include "llvm/ADT/SmallVector.h"
-#include "llvm/InstrTypes.h"
-#include "llvm/DerivedTypes.h"
+#include "llvm/IR/InstrTypes.h"
 #include "llvm/Analysis/CallGraph.h"
 #include "llvm/Analysis/AliasAnalysis.h"
 #include "llvm/Analysis/LoopInfo.h"
@@ -86,7 +80,6 @@
 #include "llvm/Support/CFG.h"
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/ADT/StringMap.h"
-#include "llvm/Target/TargetData.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
