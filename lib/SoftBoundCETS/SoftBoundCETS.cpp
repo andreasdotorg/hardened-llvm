@@ -827,6 +827,7 @@ bool SoftBoundCETSPass::isFuncDefSoftBound(const std::string &str) {
     m_func_wrappers_available["exit"] = true;
     m_func_wrappers_available["strtok"] = true;
     m_func_wrappers_available["strdup"] = true;
+    m_func_wrappers_available["__strdup"] = true;
     m_func_wrappers_available["strcat"] = true;
     m_func_wrappers_available["strncat"] = true;
     m_func_wrappers_available["strncpy"] = true;
@@ -843,11 +844,17 @@ bool SoftBoundCETSPass::isFuncDefSoftBound(const std::string &str) {
     m_func_wrappers_available["times"] = true;
     m_func_wrappers_available["strftime"] = true;
     m_func_wrappers_available["localtime"] = true;
+    m_func_wrappers_available["localtime_r"] = true;
     m_func_wrappers_available["time"] = true;
     m_func_wrappers_available["drand48"] = true;
     m_func_wrappers_available["free"] = true;
     m_func_wrappers_available["lrand48"] = true;
+    m_func_wrappers_available["asctime"] = true;
+    m_func_wrappers_available["asctime_r"] = true;
+    m_func_wrappers_available["gmtime"] = true;
+    m_func_wrappers_available["gmtime_r"] = true;
     m_func_wrappers_available["ctime"] = true;
+    m_func_wrappers_available["ctime_r"] = true;
     m_func_wrappers_available["difftime"] = true;
     m_func_wrappers_available["toupper"] = true;
     m_func_wrappers_available["tolower"] = true;
@@ -869,6 +876,10 @@ bool SoftBoundCETSPass::isFuncDefSoftBound(const std::string &str) {
     m_func_wrappers_available["__ctype_tolower_loc"] = true;
     m_func_wrappers_available["qsort"] = true;
     
+    m_func_wrappers_available["asprintf"] = true;
+    m_func_wrappers_available["vasprintf"] = true;
+    m_func_wrappers_available["__vasprintf_chk"] = true;
+
     m_func_def_softbound["__softboundcets_introspect_metadata"] = true;
     m_func_def_softbound["__softboundcets_copy_metadata"] = true;
     m_func_def_softbound["__softboundcets_allocate_shadow_stack_space"] = true;
@@ -960,8 +971,6 @@ bool SoftBoundCETSPass::isFuncDefSoftBound(const std::string &str) {
     m_func_def_softbound["fscanf"] = true;
     m_func_def_softbound["sscanf"] = true;   
 
-    m_func_def_softbound["asprintf"] = true;
-    m_func_def_softbound["vasprintf"] = true;
     m_func_def_softbound["__fpending"] = true;
     m_func_def_softbound["fcntl"] = true;
 

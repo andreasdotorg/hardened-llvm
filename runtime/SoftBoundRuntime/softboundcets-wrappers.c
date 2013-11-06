@@ -704,22 +704,13 @@ __WEAK_INLINE int softboundcets_dirfd(DIR *dirp){
   return dirfd(dirp);
 }
 
+// why 1024???
 __WEAK_INLINE struct lconv *softboundcets_localeconv(void){
   struct lconv* temp = localeconv();
 
   __softboundcets_store_return_metadata(temp, temp + 1024, 
                                         1, (void*) __softboundcets_global_lock);
   
-  return temp;
-}
-
-__WEAK_INLINE struct tm *softboundcets_gmtime(const time_t *timep){
-
-  struct tm * temp = gmtime(timep);
-
-  __softboundcets_store_return_metadata(temp, temp + 1024, 
-                                        1, (void*) __softboundcets_global_lock);
-
   return temp;
 }
 
@@ -1711,9 +1702,36 @@ __WEAK_INLINE long softboundcets_pathconf(char *path, int name){
 }
 
 
+__WEAK_INLINE struct tm* softboundcets_gmtime(const time_t* timep){
+
+  struct tm * ret_ptr = gmtime(timep);
+  __softboundcets_store_return_metadata(ret_ptr, 
+                                        (char*)ret_ptr + sizeof(struct tm), 
+                                        1, __softboundcets_global_lock); 
+  return ret_ptr;
+}
+
+__WEAK_INLINE struct tm* softboundcets_gmtime_r(const time_t* timep, struct tm* result){
+
+  struct tm * ret_ptr = gmtime_r(timep, result);
+  __softboundcets_store_return_metadata(ret_ptr, 
+                                        (char*)ret_ptr + sizeof(struct tm), 
+                                        1, __softboundcets_global_lock); 
+  return ret_ptr;
+}
+
 __WEAK_INLINE struct tm* softboundcets_localtime(const time_t* timep){
 
   struct tm * ret_ptr = localtime(timep);
+  __softboundcets_store_return_metadata(ret_ptr, 
+                                        (char*)ret_ptr + sizeof(struct tm), 
+                                        1, __softboundcets_global_lock); 
+  return ret_ptr;
+}
+
+__WEAK_INLINE struct tm* softboundcets_localtime_r(const time_t* timep, struct tm* result){
+
+  struct tm * ret_ptr = localtime_r(timep, result);
   __softboundcets_store_return_metadata(ret_ptr, 
                                         (char*)ret_ptr + sizeof(struct tm), 
                                         1, __softboundcets_global_lock); 
@@ -1789,6 +1807,52 @@ __WEAK_INLINE char* softboundcets_ctime( const time_t* timep){
 
 }
 
+__WEAK_INLINE char* softboundcets_ctime_r( const time_t* timep, char* buf){
+  
+  char* ret_ptr = ctime_r(timep, buf);
+
+  if(ret_ptr == NULL){
+    __softboundcets_store_null_return_metadata();
+  }
+  else {
+    __softboundcets_store_return_metadata(ret_ptr, ret_ptr + strlen(ret_ptr) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+  return ret_ptr;
+
+}
+
+
+__WEAK_INLINE char* softboundcets_asctime( const struct tm* tm){
+  
+  char* ret_ptr = asctime(tm);
+
+  if(ret_ptr == NULL){
+    __softboundcets_store_null_return_metadata();
+  }
+  else {
+    __softboundcets_store_return_metadata(ret_ptr, ret_ptr + strlen(ret_ptr) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+  return ret_ptr;
+
+}
+
+__WEAK_INLINE char* softboundcets_asctime_r( const struct tm* tm, char* buf){
+  
+  char* ret_ptr = asctime_r(tm, buf);
+
+  if(ret_ptr == NULL){
+    __softboundcets_store_null_return_metadata();
+  }
+  else {
+    __softboundcets_store_return_metadata(ret_ptr, ret_ptr + strlen(ret_ptr) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+  return ret_ptr;
+
+}
+
 
 
 __WEAK_INLINE double softboundcets_difftime(time_t time1, time_t time0) {  
@@ -1823,6 +1887,47 @@ __WEAK_INLINE char* softboundcets_getenv(const char* name){
   }
 
   return ret_ptr;
+}
+
+__WEAK_INLINE int softboundcets_asprintf(char** strp, const char * fmt, ...){
+  va_list arglist;
+  va_start( arglist, fmt );
+  int ret = vasprintf( strp, fmt, arglist );
+  va_end( arglist );
+   
+  if(ret != -1){
+    __softboundcets_store_return_metadata(*strp, 
+                                          *strp + strlen(*strp) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+
+  return ret;
+}
+
+__WEAK_INLINE int softboundcets_vasprintf(char** strp, const char * fmt, va_list ap){
+   
+  int ret = vasprintf(strp, fmt, ap);
+   
+  if(ret != -1){
+    __softboundcets_store_return_metadata(*strp, 
+                                          *strp + strlen(*strp) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+
+  return ret;
+}
+
+__WEAK_INLINE int softboundcets___vasprintf_chk(char** strp, int flags, const char * fmt, va_list ap){
+   
+  int ret = vasprintf(strp, fmt, ap);
+   
+  if(ret != -1){
+    __softboundcets_store_return_metadata(*strp, 
+                                          *strp + strlen(*strp) + 1, 
+                                          1, __softboundcets_global_lock);
+  }
+
+  return ret;
 }
 
 __WEAK_INLINE int softboundcets_atexit(void_func_ptr function){
