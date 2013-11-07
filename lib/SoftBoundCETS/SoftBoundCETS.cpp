@@ -418,7 +418,7 @@ void SoftBoundCETSPass::initializeSoftBoundVariables(Module& module) {
 
   m_memset_check = 
     module.getFunction("__softboundcets_memset_check");
-  assert(m_memcopy_check && 
+  assert(m_memset_check && 
          "__softboundcets_memset_check function null?");
 
 
