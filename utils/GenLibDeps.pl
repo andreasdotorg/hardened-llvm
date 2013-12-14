@@ -103,6 +103,7 @@ if ($PEROBJ) {
     $libpath =~ s/^Interpreter/ExecutionEngine\/Interpreter/;
     $libpath =~ s/^JIT/ExecutionEngine\/JIT/;
     $libpath =~ s/^ScalarOpts/Transforms\/Scalar/;
+    $libpath =~ s/^SoftBoundCETS/Transforms\/SoftBoundCETS/;
     $libpath =~ s/^TransformUtils/Transforms\/Utils/;
     $libpath =~ s/^ipa/Analysis\/IPA/;
     $libpath =~ s/^ipo/Transforms\/IPO/;
@@ -144,6 +145,7 @@ if ($PEROBJ) {
     $libpath =~ s/^Interpreter/ExecutionEngine\/Interpreter/;
     $libpath =~ s/^JIT/ExecutionEngine\/JIT/;
     $libpath =~ s/^ScalarOpts/Transforms\/Scalar/;
+    $libpath =~ s/^SoftBoundCETS/Transforms\/SoftBoundCETS/;
     $libpath =~ s/^TransformUtils/Transforms\/Utils/;
     $libpath =~ s/^ipa/Analysis\/IPA/;
     $libpath =~ s/^ipo/Transforms\/IPO/;
